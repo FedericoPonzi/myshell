@@ -35,6 +35,7 @@ This shell is still a working progress! It can do basic things, but there is sti
 
 The EBNF of the language is:
 
+```
 program := statement+;
 statment := assignemnt | command var_args |
 assingment := id '=' expr
@@ -43,4 +44,4 @@ term :=  [0-9]+ | \""[a-zA-Z\ ]+"\"
 statment := command var_arg | pipe | output_redirection
 command := "echo" | "exit" | "clear" | "help" | "sleep"
 var_arg
-
+```
