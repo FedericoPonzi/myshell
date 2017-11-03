@@ -1,11 +1,12 @@
-//wrapper of chdir() syscall
-
-
 #include <zconf.h>
+#include <utils.h>
+#include <stdio.h>
 
 int cdCommand(char ** args)
 {
-    chdir(args++);
-
-    return 0;
+    *args++;
+    int ret = chdir(*args);
+    if(ret == -1)
+        perror("chdir");
+    return ret;
 }

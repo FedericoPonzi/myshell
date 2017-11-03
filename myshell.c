@@ -31,7 +31,7 @@ char* getLine()
     size_t line_len = 0;
     ssize_t read;
 
-    printf("%s %% ", cwd); //prompt
+
     read = getline(&line, &line_len, stdin);
     if(read == -1) {
         return NULL;
@@ -87,10 +87,12 @@ void mainLoop()
     char* line;
     Command* command; 
     int exit_code;
-    getcwd(cwd, sizeof(cwd));
 
     while(1)
     {
+        getcwd(cwd, sizeof(cwd));
+        printf("%s %% ", cwd); //prompt
+
         line = getLine();
 
         if(line == NULL)
