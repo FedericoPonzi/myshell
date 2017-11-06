@@ -4,6 +4,8 @@
 #include <string.h>
 #include <sys/wait.h>
 #include <assert.h>
+#include <readline/readline.h>
+#include <readline/history.h>
 #include "inc/utils.h"
 #include "inc/env.h"
 #include "inc/parser.h"
@@ -15,7 +17,7 @@
 void init();
 void mainLoop();
 char* getLine();
-int execute(Command* command);
+unsigned execute(Command* command);
 
 char cwd[PATH_MAX];
 
@@ -27,18 +29,14 @@ pid_t external_command_pid;
  */
 char* getLine()
 {
-    char* line = NULL;
-    size_t line_len = 0;
-    ssize_t read;
-
-
-    read = getline(&line, &line_len, stdin);
-    if(read == -1) {
-        return NULL;
-    }
-    //Removes new line char
-    line[strlen(line)-1] = '\0';
-
+    getcwd(cwd, PATH_MAX); //TODO: add % at the end.
+    const char* PROMPT_APPEND = " % ";
+    char* prompt = calloc(strlen(cwd) + strlen(PROMPT_APPEND), sizeof(char));
+    strcat(prompt, cwd);
+    strcat(prompt, PROMPT_APPEND);
+    char* line = readline(prompt);
+    add_history(line);
+    free(prompt);
     return line;
 }
 
@@ -46,9 +44,9 @@ char* getLine()
 /**
 * Executes a command, setting the right environment and eventually forking.
 */
-int execute(Command* command)
+unsigned execute(Command* command)
 {
-	int toRet = -1;
+    int toRet = 1;
 
 	//Setup the execution, updating stdout/stdin based on command
     if(command->fun)
@@ -79,7 +77,7 @@ int execute(Command* command)
     }
     free_command(command);
     addEnvInt("?", toRet);
-	return toRet;
+	return toRet > 0 ? toRet : -toRet;
 }
 
 void mainLoop()
@@ -90,11 +88,7 @@ void mainLoop()
 
     while(1)
     {
-        getcwd(cwd, sizeof(cwd));
-        printf("%s %% ", cwd); //prompt
-
         line = getLine();
-
         if(line == NULL)
         {
             break;
@@ -106,8 +100,10 @@ void mainLoop()
             exit_code = execute(command);
             printf("(%d) ", exit_code); //For now, so the compiler don't complains
         }
+
         free(line);
     }
+    free(line);
     exit(EXIT_SUCCESS);
 }
 

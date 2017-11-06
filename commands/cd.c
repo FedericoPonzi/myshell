@@ -7,6 +7,6 @@ int cdCommand(char ** args)
     *args++;
     int ret = chdir(*args);
     if(ret == -1)
-        perror("chdir");
+        perror("cd");
     return ret;
 }

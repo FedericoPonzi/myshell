@@ -31,6 +31,18 @@ This shell is still a working progress! It can do basic things, but there is sti
 ## LONG LONG todo:
  * -
 
+
+## Wanted:
+
+ * personalized prompt: add username, hostname ecc.
+ * STDIN STDOUT redirect: using `<`` and `>`, later maybe add `>>` for append, `>` to overwrite and `&>` support ecc.
+ * support for background processes: & to background, fg and bg commands. Don't exit if there are background processes.
+ * history: history command, up and down keys, record commands in a history file. Maybe one day add ctrl+r/ctrl+s to find ecc.
+ * if-then-else: basic scripting support.
+ * tab completition
+ * Some nice-to-have commands: jobs, cd, history, exit, kill.
+
+
 ----
 
 The EBNF of the language is:
