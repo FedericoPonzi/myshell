@@ -1,13 +1,25 @@
 #include <stdio.h>
 #include <stdarg.h>
+#include <ctype.h>
 #include "inc/utils.h"
 
-#define LOG_STDERR 0
-#define LOG_STDOUT 1
-#define LOG_FILE 2
+void trim_start(char** l){
+    while(isspace(**l)){
+        (*l)++;
+    }
+}
 
-int debug = 1;
+int isNull(void* p){
+    if(p == NULL)
+    {
+        return TRUE;
+    }
+    return FALSE;
+}
+
+int debug = 0;
 void logm(char* message, ...){
+    if(debug) return;
     int output = LOG_STDERR;
     va_list args;
     FILE *saved = stdout;

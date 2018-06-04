@@ -4,13 +4,12 @@
 
 #include <stdio.h>
 #include <signal.h>
-#include <utils.h>
-
-#include "signals_handlers.h"
-#include "myshell.h"
+#include "inc/utils.h"
+#include "inc/signals_handlers.h"
+#include "inc/myshell.h"
 
 void sigInt(){
-    logm("* SIGINT TRIGGERED.\n");
+    //logm("* SIGINT TRIGGERED.\n");
     if(external_command_pid)
         kill(external_command_pid, SIGINT);
 }

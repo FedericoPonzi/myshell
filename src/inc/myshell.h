@@ -5,7 +5,8 @@
 #ifndef FIRST_MYSHELL_H
 #define FIRST_MYSHELL_H
 #include <signal.h>
-
+#include <unistd.h>
+#include <sys/types.h>
 #define COMMAND_NOT_FOUND 127
 
 

@@ -25,23 +25,6 @@ pid_t external_command_pid;
 
 
 /**
- * Gets a single input line
- */
-char* getLine()
-{
-    getcwd(cwd, PATH_MAX); //TODO: add % at the end.
-    const char* PROMPT_APPEND = " % ";
-    char* prompt = calloc(strlen(cwd) + strlen(PROMPT_APPEND), sizeof(char));
-    strcat(prompt, cwd);
-    strcat(prompt, PROMPT_APPEND);
-    char* line = readline(prompt);
-    add_history(line);
-    free(prompt);
-    return line;
-}
-
-
-/**
 * Executes a command, setting the right environment and eventually forking.
 */
 unsigned execute(Command* command)
@@ -73,27 +56,45 @@ unsigned execute(Command* command)
                 waitpid(external_command_pid, &toRet, 0);
                 toRet = WEXITSTATUS(toRet);
         }
-        external_command_pid = NULL;
+        external_command_pid = NULL; //TODO: Check this lol
     }
     free_command(command);
     addEnvInt("?", toRet);
 	return toRet > 0 ? toRet : -toRet;
 }
 
+/**
+ * Gets a single input line
+ */
+char* getLine()
+{
+    getcwd(cwd, PATH_MAX);
+    const char* PROMPT_APPEND = " % ";
+    char* prompt = calloc(strlen(cwd) + strlen(PROMPT_APPEND), sizeof(char));
+    strcat(prompt, cwd);
+    strcat(prompt, PROMPT_APPEND);
+    char* line = readline(prompt);
+    add_history(line);
+    free(prompt);
+    return line;
+}
+
 void mainLoop()
 {
     char* line;
+    char* orig_line;
     Command* command; 
     int exit_code;
 
     while(1)
     {
         line = getLine();
+        orig_line = line;
         if(line == NULL)
         {
             break;
         }
-
+        trim_start(&line);
         if (strlen(line) > 0)
         {
             command = parser(line);
@@ -101,9 +102,10 @@ void mainLoop()
             printf("(%d) ", exit_code); //For now, so the compiler don't complains
         }
 
-        free(line);
+        free(orig_line);
     }
     free(line);
+    printf("\n");
     exit(EXIT_SUCCESS);
 }
 
@@ -113,4 +115,5 @@ void init()
     initEnv();
     initTokens();
     initSignalHandlers();
+
 }

@@ -1,10 +1,10 @@
 //
-// Created by isaacisback on 15/10/17.
+// Created by federico ponzi on 15/10/17.
 //
 
 #include <stdio.h>
 #include <stdlib.h>
-#include "myshell.h"
+#include "inc/myshell.h"
 
 int main(int argc, char* argv[])
 {
