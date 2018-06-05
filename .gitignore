@@ -2,4 +2,5 @@
 cmake-build-debug
 bin
 obj
+CMakeLists.txt
 

@@ -2,7 +2,7 @@ CC=gcc
 LINKER = gcc
 TARGET = myshell
 
-CFLAGS= -std=c99 -Wall -g -pthread
+CFLAGS= -std=c99 -Wall -g -pthread -D_POSIX_C_SOURCE=200809L
 LFLAGS = -Wall -I. -lreadline
 SRCDIR = src
 OBJDIR = obj
